@@ -1,0 +1,32 @@
+<% const title = 'Вход'; %>
+<%- include('partials/header') %>
+
+<section class="page fade-in">
+  <div class="hero-band">
+    <h1>Вход</h1>
+    <p class="lead">Портал бронирования помещений «Конференции.РФ»</p>
+    <img class="hero-img" src="/img/hero.svg" alt="Конференции.РФ" width="960" height="240">
+  </div>
+
+  <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <form class="form card-form" action="/login" method="post" novalidate>
+    <label>
+      Логин
+      <input type="text" name="login" value="<%= values.login || '' %>" required>
+    </label>
+
+    <label>
+      Пароль
+      <input type="password" name="password" required>
+    </label>
+
+    <button type="submit" class="btn btn-primary">Войти</button>
+  </form>
+
+  <p class="form-link">Еще не зарегистрированы? <a href="/register">Регистрация</a></p>
+</section>
+
+<%- include('partials/footer') %>

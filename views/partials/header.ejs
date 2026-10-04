@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' — ' : '' %>Конференции.РФ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="/">Конференции.РФ</a>
+      <nav class="nav">
+        <% if (user) { %>
+          <% if (user.is_admin) { %>
+            <a href="/admin">Админка</a>
+          <% } else { %>
+            <a href="/applications">Мои заявки</a>
+            <a href="/applications/new">Новая заявка</a>
+          <% } %>
+          <span class="nav-user"><%= user.login %></span>
+          <form class="inline-form" action="/logout" method="post">
+            <button type="submit" class="btn btn-ghost">Выход</button>
+          </form>
+        <% } else { %>
+          <a href="/login">Вход</a>
+          <a href="/register">Регистрация</a>
+        <% } %>
+      </nav>
+    </div>
+  </header>
+  <main class="container main">
