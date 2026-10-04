@@ -1,0 +1,46 @@
+<% const title = 'Новая заявка'; %>
+<%- include('partials/header') %>
+
+<section class="page fade-in">
+  <div class="hero-band">
+    <h1>Новая заявка</h1>
+    <p class="lead">Выберите помещение, дату и способ оплаты</p>
+  </div>
+
+  <form class="form card-form" action="/applications/new" method="post" novalidate>
+    <label>
+      Помещение
+      <select name="room_id" required>
+        <option value="">— выберите —</option>
+        <% rooms.forEach(function (r) { %>
+          <option value="<%= r.id %>" <%= String(values.room_id) === String(r.id) ? 'selected' : '' %>>
+            <%= r.name %>
+          </option>
+        <% }) %>
+      </select>
+      <% if (errors.room_id) { %><span class="field-error"><%= errors.room_id %></span><% } %>
+    </label>
+
+    <label>
+      Дата мероприятия
+      <input type="date" name="event_date" value="<%= values.event_date || '' %>" required>
+      <% if (errors.event_date) { %><span class="field-error"><%= errors.event_date %></span><% } %>
+    </label>
+
+    <label>
+      Оплата
+      <select name="payment" required>
+        <option value="">— выберите —</option>
+        <option value="cash" <%= values.payment === 'cash' ? 'selected' : '' %>>Очно</option>
+        <option value="sbp" <%= values.payment === 'sbp' ? 'selected' : '' %>>СБП</option>
+      </select>
+      <% if (errors.payment) { %><span class="field-error"><%= errors.payment %></span><% } %>
+    </label>
+
+    <button type="submit" class="btn btn-primary">Отправить</button>
+  </form>
+
+  <p class="form-link"><a href="/applications">← К моим заявкам</a></p>
+</section>
+
+<%- include('partials/footer') %>

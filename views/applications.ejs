@@ -1,0 +1,52 @@
+<% const title = 'Мои заявки'; %>
+<%- include('partials/header') %>
+
+<section class="page fade-in">
+  <div class="page-head">
+    <h1>Мои заявки</h1>
+    <a class="btn btn-primary" href="/applications/new">Новая заявка</a>
+  </div>
+
+  <% if (message) { %>
+    <div class="alert alert-ok"><%= message %></div>
+  <% } %>
+  <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+  <% } %>
+
+  <% if (!applications.length) { %>
+    <p class="empty">Заявок пока нет. Создайте первую.</p>
+  <% } %>
+
+  <div class="cards">
+    <% applications.forEach(function (a) { %>
+      <article class="card">
+        <h2><%= a.room_name %></h2>
+        <p><strong>Дата:</strong> <%= formatDate(a.event_date) %></p>
+        <p><strong>Оплата:</strong> <%= a.payment === 'sbp' ? 'СБП' : 'Очно' %></p>
+        <p>
+          <strong>Статус:</strong>
+          <span class="badge status-<%= a.status === 'Новая' ? 'new' : (a.status === 'Завершено' ? 'done' : 'mid') %>">
+            <%= a.status %>
+          </span>
+        </p>
+
+        <% if (a.review_text) { %>
+          <p class="review-text"><em>Отзыв:</em> <%= a.review_text %></p>
+        <% } else if (a.status === 'Завершено') { %>
+          <form class="review-form" action="/applications/<%= a.id %>/review" method="post">
+            <label>
+              Оставить отзыв
+              <textarea name="text" rows="3" required placeholder="Ваш отзыв о мероприятии"></textarea>
+            </label>
+            <button type="submit" class="btn btn-secondary">Отправить отзыв</button>
+          </form>
+        <% } else { %>
+          <p class="caption">Отзыв доступен после статуса «Завершено»</p>
+        <% } %>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

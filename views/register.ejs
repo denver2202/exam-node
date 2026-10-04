@@ -1,0 +1,55 @@
+<% const title = 'Регистрация'; %>
+<%- include('partials/header') %>
+
+<section class="page fade-in">
+  <div class="hero-band">
+    <h1>Регистрация</h1>
+    <p class="lead">Создайте аккаунт для бронирования помещений</p>
+  </div>
+
+  <form class="form card-form" action="/register" method="post" novalidate>
+    <label>
+      Логин
+      <input type="text" name="login" value="<%= values.login || '' %>"
+             pattern="[A-Za-z0-9]{6,}" required
+             placeholder="latin123">
+      <% if (errors.login) { %><span class="field-error"><%= errors.login %></span><% } %>
+    </label>
+
+    <label>
+      Пароль
+      <input type="password" name="password" minlength="8" required
+             placeholder="не меньше 8 символов">
+      <% if (errors.password) { %><span class="field-error"><%= errors.password %></span><% } %>
+    </label>
+
+    <label>
+      ФИО
+      <input type="text" name="full_name" value="<%= values.full_name || '' %>"
+             pattern="[А-Яа-яЁё\s]+" required
+             placeholder="Иванов Иван Иванович">
+      <% if (errors.full_name) { %><span class="field-error"><%= errors.full_name %></span><% } %>
+    </label>
+
+    <label>
+      Телефон
+      <input type="text" name="phone" value="<%= values.phone || '' %>"
+             pattern="8\(\d{3}\)\d{3}-\d{2}-\d{2}" required
+             placeholder="8(999)123-45-67">
+      <% if (errors.phone) { %><span class="field-error"><%= errors.phone %></span><% } %>
+    </label>
+
+    <label>
+      Email
+      <input type="email" name="email" value="<%= values.email || '' %>" required
+             placeholder="user@mail.ru">
+      <% if (errors.email) { %><span class="field-error"><%= errors.email %></span><% } %>
+    </label>
+
+    <button type="submit" class="btn btn-primary">Создать пользователя</button>
+  </form>
+
+  <p class="form-link">Уже есть аккаунт? <a href="/login">Войти</a></p>
+</section>
+
+<%- include('partials/footer') %>

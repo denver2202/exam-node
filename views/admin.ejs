@@ -1,0 +1,70 @@
+<% const title = 'Админка'; %>
+<%- include('partials/header') %>
+
+<section class="page fade-in">
+  <div class="page-head">
+    <h1>Админка</h1>
+  </div>
+
+  <% if (message) { %>
+    <div class="alert alert-ok"><%= message %></div>
+  <% } %>
+
+  <form class="filter-bar" method="get" action="/admin">
+    <label>
+      Фильтр по статусу
+      <select name="status" onchange="this.form.submit()">
+        <option value="">Все заявки</option>
+        <% statuses.forEach(function (s) { %>
+          <option value="<%= s %>" <%= statusFilter === s ? 'selected' : '' %>><%= s %></option>
+        <% }) %>
+      </select>
+    </label>
+    <% if (statusFilter) { %>
+      <a class="btn btn-ghost" href="/admin">Сбросить</a>
+    <% } %>
+  </form>
+
+  <% if (!applications.length) { %>
+    <p class="empty">Заявок нет</p>
+  <% } %>
+
+  <div class="cards">
+    <% applications.forEach(function (a) { %>
+      <article class="card admin-card">
+        <h2>#<%= a.id %> — <%= a.room_name %></h2>
+        <p><strong>Пользователь:</strong> <%= a.full_name %> (<%= a.login %>)</p>
+        <p><strong>Телефон:</strong> <%= a.phone %></p>
+        <p><strong>Email:</strong> <%= a.email %></p>
+        <p><strong>Дата:</strong> <%= formatDate(a.event_date) %></p>
+        <p><strong>Оплата:</strong> <%= a.payment === 'sbp' ? 'СБП' : 'Очно' %></p>
+        <p>
+          <strong>Статус:</strong>
+          <span class="badge status-<%= a.status === 'Новая' ? 'new' : (a.status === 'Завершено' ? 'done' : 'mid') %>">
+            <%= a.status %>
+          </span>
+        </p>
+        <% if (a.review_text) { %>
+          <p class="review-text"><em>Отзыв:</em> <%= a.review_text %></p>
+        <% } %>
+
+        <form class="status-form" action="/admin/applications/<%= a.id %>/status" method="post">
+          <% if (statusFilter) { %>
+            <input type="hidden" name="filter" value="<%= statusFilter %>">
+          <% } %>
+          <label>
+            Сменить статус
+            <select name="status">
+              <% statuses.forEach(function (s) { %>
+                <option value="<%= s %>" <%= a.status === s ? 'selected' : '' %>><%= s %></option>
+              <% }) %>
+            </select>
+          </label>
+          <button type="submit" class="btn btn-secondary">Сохранить</button>
+        </form>
+      </article>
+    <% }) %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
